@@ -1,0 +1,108 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
+group = 'com._2je7.pofol'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // MyBatis 최신 버전
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+
+    // JWT (io.jsonwebtoken)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5' 
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5' 
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //  Spring Boot 3.x에서는 Springfox 사용 불가 → Springdoc 사용
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    // Hibernate 최신 버전 (Spring Boot 3.x 호환)
+    implementation 'org.hibernate:hibernate-core:6.4.4.Final'
+
+    // Apache POI (엑셀)
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+
+    // Firebase Admin SDK
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    // JSON 처리
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+
+    // 썸네일 생성
+    implementation 'net.coobird:thumbnailator:0.4.20'
+
+    // ShedLock (스케줄링 잠금)
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:5.11.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.11.0'
+
+    // Spring Boot 3.x LDAP
+    implementation 'org.springframework.boot:spring-boot-starter-data-ldap'
+    implementation 'org.springframework.security:spring-security-ldap'
+
+    // Google OTP (2FA)
+    implementation 'com.warrenstrange:googleauth:1.4.0'
+
+    // QR 코드 생성
+    implementation 'com.google.zxing:core:3.5.2'
+    implementation 'com.google.zxing:javase:3.5.2'
+
+    // UUID 생성
+    implementation 'com.fasterxml.uuid:java-uuid-generator:4.3.0'
+
+    // Spring WebFlux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
+
+tasks.named('test') {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	inputs.dir snippetsDir
+	dependsOn test
+}
