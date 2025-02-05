@@ -57,10 +57,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     //  Spring Boot 3.x에서는 Springfox 사용 불가 → Springdoc 사용
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
-
-    // Hibernate 최신 버전 (Spring Boot 3.x 호환)
-    implementation 'org.hibernate:hibernate-core:6.4.4.Final'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0'
 
     // Apache POI (엑셀)
     implementation 'org.apache.poi:poi-ooxml:5.2.3'

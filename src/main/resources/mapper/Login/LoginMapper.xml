@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com._2je7.pofol.Dao.Login.LoginDao">
+	<select id="getTbUserByUserLgnId" parameterType="string" resultType="com._2je7.pofol.Dto.Login.LoginResponseDto">
+		SELECT user_lgn_id
+			, user_lgn_pswd 
+		FROM tb_user
+		WHERE user_lgn_id = #{id}
+	</select>
+</mapper>

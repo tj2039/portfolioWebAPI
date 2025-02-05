@@ -29,9 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
-	
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
     
     private static final List<String> EXCLUDE_URL =
             Collections.unmodifiableList(
@@ -87,7 +84,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
-            	fullId = jwtTokenUtil.getIdFromToken(jwtToken);
+            	fullId = JwtTokenUtil.getIdFromToken(jwtToken);
             	apiLog.setUserId(fullId);
             	log.debug("fullId --> " + fullId);
             } catch (IllegalArgumentException e) {
@@ -105,7 +102,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         	
         	   UserDetails userDetails = this.jwtUserDetailService.loadUserByUsername(fullId);
         	
-            if(userDetails != null && jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+            if(userDetails != null && JwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null ,userDetails.getAuthorities());
 

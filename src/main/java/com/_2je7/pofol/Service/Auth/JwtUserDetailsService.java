@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com._2je7.pofol.Dao.Login.LoginDao;
 import com._2je7.pofol.Entity.TbUserEntity;
 import com._2je7.pofol.Repository.TbUser.TbUserRepository;
 
@@ -23,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	TbUserRepository userRepo;
-        
+	TbUserRepository tbUserRepo;
+	
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String fullId) throws UsernameNotFoundException {    		
@@ -36,11 +37,11 @@ public class JwtUserDetailsService implements UserDetailsService {
     		String id = fullId;
     		
     		if(id.length() > 0 && id.isEmpty() == false) {
-    			userEntity = userRepo.findBUser_lgn_id(id).orElse(null);
-    			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userEntity.getUser_grd()));
+    			userEntity = tbUserRepo.findByUserLgnId(id);
+    			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userEntity.getUserGrd()));
     		}	
     		
-    		user = new User(userEntity.getUser_lgn_id().toString(), userEntity.getUser_lgn_pswd(), grantedAuthorities);
+    		user = new User(userEntity.getUserLgnId().toString(), userEntity.getUserLgnPswd(), grantedAuthorities);
     	}
     	catch (Exception err) {
     		log.error(err.getMessage());

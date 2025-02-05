@@ -1,5 +1,8 @@
 package com._2je7.pofol.Config.DB;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +24,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
@@ -62,15 +65,14 @@ public class DataBaseConfig {
 		return new SqlSessionTemplate(dbSqlSessionFactory);
 	}
 	
-    @Primary
+	@Primary
     @Bean(name = "dbEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean dbEntityManagerFactory(@Qualifier("dbDataSource") DataSource dataSource) {
-		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(dataSource);
-		em.setPackagesToScan(new String[] {"com._2je7.pofol.Entity"});
-		em.setPersistenceUnitName("entityManager"); 
-		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        return em;
+    public LocalContainerEntityManagerFactoryBean dbEntityManagerFactory(@Qualifier("dbDataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
+        return builder
+                .dataSource(dataSource)
+                .packages("com._2je7.pofol.Entity")
+                .persistenceUnit("entityManager")
+                .build();
     }
 
     @Primary
