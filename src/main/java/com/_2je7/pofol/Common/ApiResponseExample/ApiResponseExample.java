@@ -20,9 +20,28 @@ public class ApiResponseExample {
 		+ "  \"count\": -1\r\n"
 		+ "}";
 	public static class Login{
-		public static final String tryLogin_2000 = API_developing;
-		public static final String tryLogin_4009 = API_developing;
-
+		/**
+		 * 로그인 ApiResponseExample
+		 * */
+		public static final String tryLogin_2000 = "{\n"
+				+ "  \"code\": 2000,\n"
+				+ "  \"httpStatus\": \"OK\",\n"
+				+ "  \"message\": \"로그인 성공\",\n"
+				+ "  \"count\": 1,\n"
+				+ "  \"result\": {\n"
+				+ "    \"userLgnId\": \"alice\",\n"
+				+ "    \"userNm\": \"관리자\",\n"
+				+ "    \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhbGljZSIsInN1YiI6ImFsaWNlIiwiaWF0IjoxNzM4NzQ0MzI1LCJleHAiOjE3Mzg3ODc1MjV9.Act_YBbNgnOdlMHvX2chwBzqOXb0E1wD8ArlOrCy-JM\",\n"
+				+ "    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3Mzg3NDQzMjUsImV4cCI6MTczODgzMDcyNX0.xYdrUob2--H5AYx3UjE-ncpl22fka6kD76xCF3JTg-U\",\n"
+				+ "    \"accessTokenExpireDate\": 43200000\n"
+				+ "  }\n"
+				+ "}";
+		public static final String tryLogin_4009 = "{\n"
+				+ "  \"code\": 4009,\n"
+				+ "  \"httpStatus\": \"IMMIGRATION_FAIL\",\n"
+				+ "  \"message\": \"입력하신 아이디와 패스워드를 확인해 주세요.\",\n"
+				+ "  \"count\": 0\n"
+				+ "}";
 	}
 	/**
 	 * apiSummary ApiResponseExample

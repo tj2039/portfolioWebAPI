@@ -53,7 +53,7 @@ public class LoginServiceImpl implements LoginService{
 				commonResponse = CommonResponse.builder()
 						.code(ResponseCode.IMMIGRATION_FAIL.value())
 						.httpStatus(ResponseCode.IMMIGRATION_FAIL)
-						.message(message.getMessage("Login.tryLogin.IMMIGRATION_FAIL.DEACTIVATION", null, locale))
+						.message(message.getMessage("Login.tryLogin.IMMIGRATION_FAIL.INVAILD", null, locale))
 						.count(0)
 						.build();
 				return commonResponse;
