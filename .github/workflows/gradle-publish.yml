@@ -36,7 +36,7 @@ jobs:
       # 📌 3. application-prod.properties 생성
       - name: Create application-prod.properties
         run: |
-          ## create application-database.yaml
+          ## create application-prod.properties
           cd ./src/main/resources
 
           # application-prod.properties 파일 생성
@@ -69,5 +69,5 @@ jobs:
       # 📌 6. Jenkins 트리거 (배포 요청)
       - name: Notify Jenkins for Deployment
         run: |
-          curl -X POST htts://${{ secrets.JENKINS_SERVER }}/job/DeployPortfolioWebAPI/build \
+          curl -X POST https://${{ secrets.JENKINS_SERVER }}/job/DeployPortfolioWebAPI/build \
           --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}"
