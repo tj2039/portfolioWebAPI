@@ -43,14 +43,14 @@ jobs:
           touch ./application-prod.properties
 
           # GitHub-Actions 에서 설정한 값을 aapplication-prod.properties 파일에 쓰기
-          echo "spring.db.datasource.jdbc-url=${{ secrets. }}" >> ./application-prod.properties
-          echo "spring.db.datasource.username=${{ secrets. }}" >> ./application-prod.properties
-          echo "spring.db.datasource.password=${{ secrets. }}" >> ./application-prod.properties
-          echo "spring.db.datasource.driver-class-name=${{ secrets. }}" >> ./application-prod.properties
-          echo "spring.jpa.hibernate.ddl-auto=${{ secrets. }}" >> ./application-prod.properties
-          echo "spring.jpa.generate-ddl=${{ secrets. }}" >> ./application-prod.properties
-          echo "spring.jpa.show-sql=${{ secrets. }}" >> ./application-prod.properties
-          echo "api.access.token.secretkey=${{ secrets. }}" >> ./application-prod.properties
+		  echo "spring.db.datasource.jdbc-url=${{ secrets.DB_URL }}" >> ./application-prod.properties
+		  echo "spring.db.datasource.username=${{ secrets.DB_ID }}" >> ./application-prod.properties
+		  echo "spring.db.datasource.password=${{ secrets.DB_PW }}" >> ./application-prod.properties
+		  echo "spring.db.datasource.driver-class-name=${{ secrets.DB_DRIVER }}" >> ./application-prod.properties
+		  echo "spring.jpa.hibernate.ddl-auto=${{ secrets.JPA_DDL_AUTO }}" >> ./application-prod.properties
+		  echo "spring.jpa.generate-ddl=${{ secrets.JPA_GEN_DDL }}" >> ./application-prod.properties
+		  echo "spring.jpa.show-sql=${{ secrets.JPA_SHOW_SQL }}" >> ./application-prod.properties
+		  echo "api.access.token.secretkey=${{ secrets.JWT_SECRETKEY }}" >> ./application-prod.properties
         shell: bash
 			
       # 📌 3. Gradle 설정 (빌드 캐싱 활성화)
