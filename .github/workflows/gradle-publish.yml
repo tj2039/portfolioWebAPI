@@ -33,7 +33,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 		  
-	  ## create application-database.yaml
+	  # create application-database.yaml
       - name: make application-prod.properties
         run: |
           ## create application-database.yaml
