@@ -44,7 +44,7 @@ jobs:
       # 📌 5. Docker 이미지 빌드 (Docker Hub가 아니라 Synology NAS에서 관리)
       - name: Build Docker Image
         run: |
-          docker build -t https://${{ secrets.SYNOLOGY_SERVER }}/docker/pofol .
+          docker build -t ${{ secrets.SYNOLOGY_SERVER }}/docker/pofol .
 
       # 📌 6. Jenkins 트리거 (배포 요청)
       - name: Notify Jenkins for Deployment
