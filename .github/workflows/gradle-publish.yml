@@ -33,8 +33,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-	  # 📌 3. application-prod.properties 생성
-	  - name: Create application-prod.properties
+      # 📌 3. application-prod.properties 생성
+      - name: Create application-prod.properties
         run: |
           ## create application-database.yaml
           cd ./src/main/resources
