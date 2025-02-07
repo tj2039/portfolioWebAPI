@@ -36,10 +36,7 @@ jobs:
       # 📌 3. application-prod.properties 생성
       - name: Create application-prod.properties
         run: |
-          # application-prod.properties 파일 생성
           touch src/main/resources/application-prod.properties
-
-          # GitHub Secrets에서 환경 변수 가져와서 파일에 저장
           echo "spring.db.datasource.jdbc-url=${{ secrets.DB_URL }}" >> src/main/resources/application-prod.properties
           echo "spring.db.datasource.username=${{ secrets.DB_ID }}" >> src/main/resources/application-prod.properties
           echo "spring.db.datasource.password=${{ secrets.DB_PW }}" >> src/main/resources/application-prod.properties
@@ -50,20 +47,25 @@ jobs:
           echo "api.access.token.secretkey=${{ secrets.JWT_SECRETKEY }}" >> src/main/resources/application-prod.properties
         shell: bash
 
-      # 📌 3. Gradle 설정 (빌드 캐싱 활성화)
+      # 📌 4. Gradle 설정 (빌드 캐싱 활성화)
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # 📌 4. Spring Boot 빌드 (테스트 제외)
+      # 📌 5. Spring Boot 빌드 (테스트 제외)
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      # 📌 5. Docker 이미지 빌드 (Docker Hub가 아니라 Synology NAS에서 관리)
-      - name: Build Docker Image
-        run: |
-          docker build -t pofol .
+      # 📌 6. Docker Hub 로그인
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      # 📌 6. Jenkins 트리거 (배포 요청)
+      # 📌 7. Docker 이미지 빌드 & 푸시 (Docker Hub 업로드)
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/pofol:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/pofol:latest
+
+      # 📌 8. Jenkins 트리거 (배포 요청)
       - name: Notify Jenkins for Deployment
         run: |
           curl -X POST https://${{ secrets.JENKINS_SERVER }}/job/DeployPortfolioWebAPI/build \
