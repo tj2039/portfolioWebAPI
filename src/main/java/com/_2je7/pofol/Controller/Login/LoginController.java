@@ -56,7 +56,9 @@ public class LoginController {
     public ResponseEntity<CommonResponse<LoginResponseDto>> tryLogin( @Validated @RequestBody LoginRequestDto member, BindingResult result, HttpServletRequest request) throws IOException {
         log.info("MemberController::login " + member.toString());
 
+        //로그인 IP 주소 저장
         member.setIpAddress(request.getRemoteAddr());
+        
         CommonResponse commonResponse = loginService.tryLogin(member,request);
         
         if(commonResponse != null) {
