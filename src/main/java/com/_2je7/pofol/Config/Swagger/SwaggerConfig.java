@@ -54,11 +54,11 @@ public class SwaggerConfig {
     /**
      * Springdoc Swagger UI 설정 (Springfox의 UiConfiguration 대체)
      */
-    @Bean
-    public GroupedOpenApi adminApi() {
-        return GroupedOpenApi.builder()
-            .group("admin")
-            .pathsToMatch("/admin/**")
-            .build();
-    }
+//    @Bean
+//    public GroupedOpenApi adminApi() {
+//        return GroupedOpenApi.builder()
+//            .group("admin")
+//            .pathsToMatch("/admin/**")
+//            .build();
+//    }
 }

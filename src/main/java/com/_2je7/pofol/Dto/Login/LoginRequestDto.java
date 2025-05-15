@@ -14,6 +14,6 @@ public class LoginRequestDto {
     @NotBlank(message = "로그인 패스워드는 필수 값입니다.")
     private String pw;
 	
-	@Schema(description = "관리자 사용자 비밀번호", hidden = true)
+	@Schema(description = "ip 주소", hidden = true)
     private String ipAddress;
 }

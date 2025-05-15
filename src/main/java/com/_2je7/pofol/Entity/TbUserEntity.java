@@ -78,4 +78,10 @@ public class TbUserEntity {
 	
 	@Column(name = "user_img")
 	private String userImg;
+	
+	@Column(name ="lgn_refresh_token")
+	private String lgnRefreshToken;
+	
+	@Column(name = "lgn_token_reg_dt")
+	private Integer lgnTokenRegDt;
 }

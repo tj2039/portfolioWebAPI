@@ -45,14 +45,15 @@ public class WebSecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-//                    .requestMatchers(
-//                        "/v3/api-docs",
-//                        "/swagger*/**",
-//                        "/api/test",
-//                        "/api/login",
-//                        "/api/logout"
-//                    ).permitAll() 
-                    .requestMatchers("/**").permitAll()
+                    .requestMatchers(
+                		"/v2/**",
+                        "/v3/**",
+                        "/api-docs/**",
+                        "/swagger-ui/**",
+                        "/api/test",
+                        "/api/login"
+                    ).permitAll() 
+//                    .requestMatchers("/**").permitAll()
                     .requestMatchers("/api/user/**").hasRole("2")
                     .anyRequest().authenticated()
                 )

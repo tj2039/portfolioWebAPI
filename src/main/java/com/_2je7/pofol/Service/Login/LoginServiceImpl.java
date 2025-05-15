@@ -16,6 +16,7 @@ import com._2je7.pofol.Dao.Login.LoginDao;
 import com._2je7.pofol.Dto.Common.Response.CommonResponse;
 import com._2je7.pofol.Dto.Login.LoginRequestDto;
 import com._2je7.pofol.Dto.Login.LoginResponseDto;
+import com._2je7.pofol.Dto.Login.LogoutRequestDto;
 import com._2je7.pofol.Entity.TbUserEntity;
 import com._2je7.pofol.Enum.ResponseCode;
 import com._2je7.pofol.Repository.TbUser.TbUserRepository;
@@ -61,7 +62,7 @@ public class LoginServiceImpl implements LoginService{
 			
 			//입력받은 비밀번호와 salt 합쳐서 암호화
 			String encryptPw = SHA256.encrypt(login.getPw()+tbUser.getSalt());
-			
+			System.out.println("encryptPw"+encryptPw);
 			//암호화한 비밀번호와 확인
 			if(!encryptPw.equals(tbUser.getUserLgnPswd())) {
 				commonResponse = CommonResponse.builder()
@@ -75,13 +76,17 @@ public class LoginServiceImpl implements LoginService{
 			
 			final String token = JwtTokenUtil.generateToken(login.getId());
 			final String refreshToken = JwtTokenUtil.generateRefreshToken();
-		
+			final Integer accessTokenExpireDate = accessTokenExpire * (60 * 60 * 1000);
 			LoginResponseDto loginInfo =  new LoginResponseDto();
 			loginInfo.setUserLgnId(tbUser.getUserLgnId());
 			loginInfo.setUserNm(tbUser.getUserNm());
 			loginInfo.setAccessToken(token);
 			loginInfo.setRefreshToken(refreshToken);
-			loginInfo.setAccessTokenExpireDate(accessTokenExpire * (60 * 60 * 1000));
+			loginInfo.setAccessTokenExpireDate(accessTokenExpireDate);
+			
+			tbUser.setLgnRefreshToken(refreshToken);
+			tbUser.setLgnTokenRegDt(accessTokenExpireDate);
+			tbUserRepo.save(tbUser);
 			
 			commonResponse = CommonResponse.builder()
 					.code(ResponseCode.OK.value())
@@ -97,6 +102,42 @@ public class LoginServiceImpl implements LoginService{
 			log.error(e.getMessage());
 		}
 		
+		return commonResponse;
+	}
+
+	@Override
+	public CommonResponse tryLogout(LogoutRequestDto login, HttpServletRequest request) throws IOException {
+		CommonResponse commonResponse = new CommonResponse();
+		Locale locale = request.getLocale();
+		
+		try {
+			//아이디로 사용자 계정 조회
+			TbUserEntity tbUser =  tbUserRepo.findByUserLgnId(login.getId());
+			
+			//계정 유무 확인
+			if(tbUser == null) {
+				commonResponse = CommonResponse.builder()
+						.code(ResponseCode.IMMIGRATION_FAIL.value())
+						.httpStatus(ResponseCode.IMMIGRATION_FAIL)
+						.message(message.getMessage("Login.tryLogout.IMMIGRATION_FAIL.INVAILD", null, locale))
+						.count(0)
+						.build();
+				return commonResponse;
+			}else {
+				tbUser.setLgnRefreshToken(null);
+				tbUser.setLgnTokenRegDt(null);
+				tbUserRepo.save(tbUser);
+				
+				commonResponse = CommonResponse.builder()
+						.code(ResponseCode.OK.value())
+						.httpStatus(ResponseCode.OK)
+						.message(message.getMessage("Login.tryLogout.OK", null, locale))
+						.count(1)
+						.build();
+			}
+		}catch (HttpStatusCodeException e) {
+			log.error(e.getMessage());
+		}
 		return commonResponse;
 	}
 
